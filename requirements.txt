@@ -1,3 +1,10 @@
 python-dotenv
 pandas
 numpy
+pymongo
+certifi
+
+# -e .
+
+# -e . will refer to the setup.py file and run that when we 
+# write the command pip install -r requirements.txt
