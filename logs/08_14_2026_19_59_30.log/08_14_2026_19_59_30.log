@@ -1,0 +1,44 @@
+[ 2026-08-14 19:59:34,053 ] 1025 httpx - INFO - HTTP Request: GET https://dagshub.com/api/v1/user "HTTP/1.1 200 OK"
+[ 2026-08-14 19:59:34,066 ] 107 dagshub - INFO - Accessing as Neerajkanoi
+[ 2026-08-14 19:59:34,872 ] 1025 httpx - INFO - HTTP Request: GET https://dagshub.com/api/v1/repos/Neerajkanoi/Network_security "HTTP/1.1 200 OK"
+[ 2026-08-14 19:59:35,700 ] 1025 httpx - INFO - HTTP Request: GET https://dagshub.com/api/v1/user "HTTP/1.1 200 OK"
+[ 2026-08-14 19:59:35,704 ] 107 dagshub - INFO - Initialized MLflow to track repo "Neerajkanoi/Network_security"
+[ 2026-08-14 19:59:35,705 ] 107 dagshub - INFO - Repository Neerajkanoi/Network_security initialized!
+[ 2026-08-14 19:59:52,909 ] 42 root - INFO - Start data Ingestion
+[ 2026-08-14 19:59:54,961 ] 65 root - INFO - Performed train test split on the dataframe
+[ 2026-08-14 19:59:54,961 ] 67 root - INFO - Exited split_data_as_train_test method of Data_Ingestion class
+[ 2026-08-14 19:59:54,961 ] 75 root - INFO - Exporting train and test file path.
+[ 2026-08-14 19:59:54,996 ] 84 root - INFO - Exported train and test file path.
+[ 2026-08-14 19:59:54,996 ] 45 root - INFO - Data Ingestion completed and artifact: DataIngestionArtifact(trained_file_path='Artifacts/08_14_2026_19_59_31/data_ingestion/ingested/train.csv', test_file_path='Artifacts/08_14_2026_19_59_31/data_ingestion/ingested/test.csv')
+[ 2026-08-14 19:59:54,999 ] 55 root - INFO - Initiate the data Validation
+[ 2026-08-14 19:59:55,011 ] 32 root - INFO - Required number of columns:2
+[ 2026-08-14 19:59:55,012 ] 33 root - INFO - Data frame has columns:31
+[ 2026-08-14 19:59:55,012 ] 32 root - INFO - Required number of columns:2
+[ 2026-08-14 19:59:55,012 ] 33 root - INFO - Data frame has columns:31
+[ 2026-08-14 19:59:55,101 ] 63 root - INFO - Entered initiate_data_transformation method of DataTransformation class
+[ 2026-08-14 19:59:55,101 ] 65 root - INFO - Starting data transformation
+[ 2026-08-14 19:59:55,110 ] 48 root - INFO - Entered get_data_trnasformer_object method of Trnasformation class
+[ 2026-08-14 19:59:55,110 ] 53 root - INFO - Initialise KNNImputer with {'missing_values': nan, 'n_neighbors': 3, 'weights': 'uniform'}
+[ 2026-08-14 19:59:55,131 ] 46 root - INFO - Entered the save_object method of MainUtils class
+[ 2026-08-14 19:59:55,133 ] 50 root - INFO - Exited the save_object method of MainUtils class
+[ 2026-08-14 19:59:55,133 ] 46 root - INFO - Entered the save_object method of MainUtils class
+[ 2026-08-14 19:59:55,134 ] 50 root - INFO - Exited the save_object method of MainUtils class
+[ 2026-08-14 20:10:10,079 ] 42 root - INFO - Start data Ingestion
+[ 2026-08-14 20:10:11,444 ] 65 root - INFO - Performed train test split on the dataframe
+[ 2026-08-14 20:10:11,444 ] 67 root - INFO - Exited split_data_as_train_test method of Data_Ingestion class
+[ 2026-08-14 20:10:11,444 ] 75 root - INFO - Exporting train and test file path.
+[ 2026-08-14 20:10:11,555 ] 84 root - INFO - Exported train and test file path.
+[ 2026-08-14 20:10:11,555 ] 45 root - INFO - Data Ingestion completed and artifact: DataIngestionArtifact(trained_file_path='Artifacts/08_14_2026_19_59_31/data_ingestion/ingested/train.csv', test_file_path='Artifacts/08_14_2026_19_59_31/data_ingestion/ingested/test.csv')
+[ 2026-08-14 20:10:11,559 ] 55 root - INFO - Initiate the data Validation
+[ 2026-08-14 20:10:11,573 ] 32 root - INFO - Required number of columns:2
+[ 2026-08-14 20:10:11,573 ] 33 root - INFO - Data frame has columns:31
+[ 2026-08-14 20:10:11,573 ] 32 root - INFO - Required number of columns:2
+[ 2026-08-14 20:10:11,573 ] 33 root - INFO - Data frame has columns:31
+[ 2026-08-14 20:10:11,675 ] 63 root - INFO - Entered initiate_data_transformation method of DataTransformation class
+[ 2026-08-14 20:10:11,676 ] 65 root - INFO - Starting data transformation
+[ 2026-08-14 20:10:11,686 ] 48 root - INFO - Entered get_data_trnasformer_object method of Trnasformation class
+[ 2026-08-14 20:10:11,686 ] 53 root - INFO - Initialise KNNImputer with {'missing_values': nan, 'n_neighbors': 3, 'weights': 'uniform'}
+[ 2026-08-14 20:10:11,697 ] 46 root - INFO - Entered the save_object method of MainUtils class
+[ 2026-08-14 20:10:11,702 ] 50 root - INFO - Exited the save_object method of MainUtils class
+[ 2026-08-14 20:10:11,702 ] 46 root - INFO - Entered the save_object method of MainUtils class
+[ 2026-08-14 20:10:11,704 ] 50 root - INFO - Exited the save_object method of MainUtils class
