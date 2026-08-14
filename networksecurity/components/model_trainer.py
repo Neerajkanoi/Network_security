@@ -58,12 +58,10 @@ class ModelTrainer:
             mlflow.log_metric("f1_score",f1_score)
             mlflow.log_metric("precision",precision_score)
             mlflow.log_metric("recall_score",recall_score)
-            mlflow.sklearn.log_model(best_model,"model")
-            
             if tracking_url_type_store != "file":
                 mlflow.sklearn.log_model(best_model, name="model", registered_model_name=best_model_name)
             else:
-                mlflow.sklearn.log_model(best_model, "model")
+                mlflow.sklearn.log_model(best_model, name="model")
 
 
         

@@ -110,14 +110,15 @@ async def predict_url_route(request: Request, url: str = Form(...)):
         final_model=load_object("final_model/model.pkl")
         network_model = NetworkModel(preprocessor=preprocesor,model=final_model)
         y_pred = network_model.predict(df)
-        df['predicted_column'] = y_pred
+        prediction = int(y_pred[0])
+        # In this dataset, -1 indicates phishing and 1 indicates legitimate/safe.
+        is_phishing = True if prediction == -1 else False
         
-        # Save output
-        os.makedirs('prediction_output', exist_ok=True)
-        df.to_csv('prediction_output/url_output.csv')
-        table_html = df.to_html(classes='table table-striped')
-        
-        return templates.TemplateResponse(request, "table.html", {"table": table_html})
+        return templates.TemplateResponse(request, "url_result.html", {
+            "request": request, 
+            "url": url, 
+            "is_phishing": is_phishing
+        })
     except Exception as e:
         raise NetworkSecurityException(e, sys)
 
