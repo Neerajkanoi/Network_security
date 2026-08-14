@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Results - Network Security</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        .results-panel {
+            max-width: 1000px;
+        }
+        .table-container {
+            margin-top: 2rem;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        .table-container::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .table-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05); 
+            border-radius: 4px;
+        }
+        .table-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2); 
+            border-radius: 4px;
+        }
+        .table-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3); 
+        }
+        
+        /* Add some specific styling for the Pandas HTML table */
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+        }
+        th {
+            position: sticky;
+            top: 0;
+            background: rgba(30, 41, 59, 0.95);
+            z-index: 1;
+            backdrop-filter: blur(4px);
+        }
+        td, th {
+            padding: 12px 16px;
+            text-align: right;
+        }
+        th:first-child, td:first-child {
+            text-align: left;
+        }
+        
+        /* Highlight predicted_column if possible (assumes last column) */
+        td:last-child, th:last-child {
+            background: rgba(59, 130, 246, 0.1);
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container results-panel">
+        <div class="glass-panel">
+            <div class="header-actions">
+                <div>
+                    <h1 style="font-size: 2rem; margin-bottom: 0.5rem; background: linear-gradient(to right, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Prediction Results</h1>
+                    <p style="color: var(--text-muted);">Analysis complete. Output saved to <code>prediction_output/output.csv</code></p>
+                </div>
+                <a href="/" class="btn btn-secondary" style="width: auto; text-decoration: none;">&larr; Go Back to Dashboard</a>
+            </div>
+            
+            <div class="table-container">
+                {{ table | safe }}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

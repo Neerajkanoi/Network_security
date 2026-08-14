@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Security System</title>
+    <meta name="description" content="AI-Powered Network Anomaly Detection and Training System">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Network Security AI</h1>
+            <p>Advanced Threat Detection & Model Training Platform</p>
+        </header>
+
+        <div class="glass-panel">
+            <div class="grid">
+                
+                <!-- Training Section -->
+                <div class="card">
+                    <h2>Model Training</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">
+                        Initiate the data ingestion, validation, transformation, and model training pipeline.
+                    </p>
+                    <button id="trainBtn" class="btn btn-secondary" onclick="trainModel()">
+                        <span class="text">Start Training Pipeline</span>
+                        <div class="loader"></div>
+                    </button>
+                </div>
+
+                <!-- Prediction Section -->
+                <div class="card">
+                    <h2>Run Predictions</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">
+                        Analyze a website URL or upload a network log CSV file.
+                    </p>
+                    
+                    <!-- URL Prediction Form -->
+                    <form action="/predict_url" method="post" id="predictUrlForm" style="margin-bottom: 2rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 1.5rem;">
+                        <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Analyze Website URL</h3>
+                        <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+                            <input type="url" name="url" placeholder="https://example.com" required 
+                                   style="flex: 1; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(255, 255, 255, 0.05); color: var(--text-main); font-size: 0.95rem; outline: none;">
+                            <button type="submit" class="btn btn-primary" style="width: auto; padding: 0.75rem 1.25rem;">Scan</button>
+                        </div>
+                    </form>
+
+                    <!-- CSV Prediction Form -->
+                    <form action="/predict" method="post" enctype="multipart/form-data" id="predictForm">
+                        <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Batch Analysis (CSV)</h3>
+                        <div class="file-upload-wrapper" id="drop-area">
+                            <div class="icon">📁</div>
+                            <div class="text">Drag & Drop or Click to Upload CSV</div>
+                            <input type="file" name="file" accept=".csv" required id="fileInput">
+                        </div>
+                        <span id="file-name"></span>
+                        <button type="submit" class="btn btn-secondary" style="margin-top: 1rem;">
+                            Analyze CSV Data
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast">Message here</div>
+
+    <script>
+        // File Upload UI Update
+        const fileInput = document.getElementById('fileInput');
+        const fileNameDisplay = document.getElementById('file-name');
+        const dropArea = document.getElementById('drop-area');
+
+        fileInput.addEventListener('change', function(e) {
+            if(e.target.files.length > 0) {
+                fileNameDisplay.textContent = 'Selected: ' + e.target.files[0].name;
+            } else {
+                fileNameDisplay.textContent = '';
+            }
+        });
+
+        // Drag and drop effects
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false)
+        });
+
+        function preventDefaults (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, () => {
+                dropArea.style.borderColor = 'var(--primary)';
+                dropArea.style.background = 'rgba(59, 130, 246, 0.1)';
+            }, false)
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, () => {
+                dropArea.style.borderColor = 'var(--glass-border)';
+                dropArea.style.background = 'rgba(255, 255, 255, 0.02)';
+            }, false)
+        });
+
+        dropArea.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            let dt = e.dataTransfer;
+            let files = dt.files;
+            fileInput.files = files;
+            if(files.length > 0) {
+                fileNameDisplay.textContent = 'Selected: ' + files[0].name;
+            }
+        }
+
+        // Training Pipeline Request
+        async function trainModel() {
+            const btn = document.getElementById('trainBtn');
+            btn.classList.add('btn-loading');
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('/train', { method: 'GET' });
+                
+                if (response.ok) {
+                    const text = await response.text();
+                    showToast(text || 'Training completed successfully!');
+                } else {
+                    showToast('Training failed. Please check logs.', true);
+                }
+            } catch (error) {
+                showToast('An error occurred while connecting to the server.', true);
+            } finally {
+                btn.classList.remove('btn-loading');
+                btn.disabled = false;
+            }
+        }
+
+        // Toast functionality
+        function showToast(message, isError = false) {
+            const toast = document.getElementById("toast");
+            toast.textContent = message;
+            toast.className = "show";
+            
+            if (isError) {
+                toast.classList.add("error");
+            } else {
+                toast.classList.remove("error");
+            }
+
+            setTimeout(function(){ 
+                toast.className = toast.className.replace("show", ""); 
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

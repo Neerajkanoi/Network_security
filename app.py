@@ -14,7 +14,8 @@ from networksecurity.logging.logger import logging
 from networksecurity.pipeline.training_pipeline import TrainingPipeline
 
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi import FastAPI, File, UploadFile,Request
+from fastapi import FastAPI, File, UploadFile, Request, Form
+from fastapi.staticfiles import StaticFiles
 from uvicorn import run as app_run
 from fastapi.responses import Response
 from starlette.responses import RedirectResponse 
@@ -23,6 +24,7 @@ import pandas as pd
 from networksecurity.utils.main_utils.utils import load_object
 
 from networksecurity.utils.ml_utils.model.estimator import NetworkModel
+from networksecurity.utils.url_extractor import extract_features
 
 
 client = pymongo.MongoClient(mongo_db_url, tlsCAFile=ca)
@@ -44,12 +46,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
 from fastapi.templating import Jinja2Templates
 templates = Jinja2Templates(directory="./templates")
 
 @app.get("/", tags=["authentication"])
-async def index():
-    return RedirectResponse(url="/docs")
+async def index(request: Request):
+    return templates.TemplateResponse(request, "index.html")
 
 @app.get("/train")
 async def train_route():
@@ -78,10 +82,28 @@ async def predict_route(request: Request,file: UploadFile = File(...)):
         df.to_csv('prediction_output/output.csv')
         table_html = df.to_html(classes='table table-striped')
         #print(table_html)
-        return templates.TemplateResponse("table.html", {"request": request, "table": table_html})
+        return templates.TemplateResponse(request, "table.html", {"table": table_html})
         
     except Exception as e:
             raise NetworkSecurityException(e,sys)
 
+@app.post("/predict_url")
+async def predict_url_route(request: Request, url: str = Form(...)):
+    try:
+        df = extract_features(url)
+        preprocesor=load_object("final_model/preprocessor.pkl")
+        final_model=load_object("final_model/model.pkl")
+        network_model = NetworkModel(preprocessor=preprocesor,model=final_model)
+        y_pred = network_model.predict(df)
+        df['predicted_column'] = y_pred
+        
+        # Save output
+        df.to_csv('prediction_output/url_output.csv')
+        table_html = df.to_html(classes='table table-striped')
+        
+        return templates.TemplateResponse(request, "table.html", {"table": table_html})
+    except Exception as e:
+        raise NetworkSecurityException(e, sys)
+
 if __name__=="__main__":
-    app_run(app,host="0.0.0.0",port=8000) 
+    app_run(app,host="localhost",port=8000)   
