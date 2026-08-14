@@ -23,14 +23,13 @@ from sklearn.ensemble import (
     GradientBoostingClassifier,
     RandomForestClassifier,
 )
+# pyrefly: ignore [missing-import]
 import mlflow
 from urllib.parse import urlparse
 
-#os.environ["MLFLOW_TRACKING_URI"]="https://dagshub.com/Neerajkanoi/Network_security.mlflow"
-#os.environ["MLFLOW_TRACKING_USERNAME"]="Neerajkanoi"
-#os.environ["MLFLOW_TRACKING_PASSWORD"]="7104284f1bb44ece21e0e2adb4e36a250ae3251f"
-#os.environ["DAGSHUB_USER_TOKEN"]="203f212b126f34f8f5afea7d3836baa3a5d2dd3d"
 
+
+# pyrefly: ignore [missing-import]
 import dagshub
 dagshub.init(repo_owner='Neerajkanoi', repo_name='Network_security', mlflow=True)
 
@@ -46,7 +45,7 @@ class ModelTrainer:
         except Exception as e:
             raise NetworkSecurityException(e,sys)
         
-    def track_mlflow(self,best_model,classificationmetric):
+    def track_mlflow(self,best_model,classificationmetric,best_model_name):
         mlflow.set_registry_uri("https://dagshub.com/Neerajkanoi/Network_security.mlflow")
         tracking_url_type_store = urlparse(mlflow.get_tracking_uri()).scheme
         with mlflow.start_run():
@@ -62,7 +61,7 @@ class ModelTrainer:
             mlflow.sklearn.log_model(best_model,"model")
             
             if tracking_url_type_store != "file":
-                mlflow.sklearn.log_model(best_model, "model", registered_model_name=best_model)
+                mlflow.sklearn.log_model(best_model, name="model", registered_model_name=best_model_name)
             else:
                 mlflow.sklearn.log_model(best_model, "model")
 
@@ -119,13 +118,13 @@ class ModelTrainer:
         classification_train_metric=get_classification_score(y_true=y_train,y_pred=y_train_pred)
         
         ## Track the experiements with mlflow
-        self.track_mlflow(best_model,classification_train_metric)
+        self.track_mlflow(best_model,classification_train_metric,best_model_name)
 
 
         y_test_pred=best_model.predict(x_test)
         classification_test_metric=get_classification_score(y_true=y_test,y_pred=y_test_pred)
 
-        self.track_mlflow(best_model,classification_test_metric)
+        self.track_mlflow(best_model,classification_test_metric,best_model_name)
 
         preprocessor = load_object(file_path=self.data_transformation_artifact.transformed_object_file_path)
             
