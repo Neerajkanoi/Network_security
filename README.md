@@ -242,7 +242,7 @@ Secrets such as `MONGO_DB_URL` and AWS credentials are managed via **GitHub Secr
  
 ## 📄 License
  
-This project currently has no license specified. Consider adding one (e.g., MIT) if you intend for others to use or contribute to it.
+This project currently has no license specified.
  
 ---
  
