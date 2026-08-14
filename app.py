@@ -64,6 +64,20 @@ async def train_route():
     except Exception as e:
         raise NetworkSecurityException(e,sys)
 
+@app.get("/sync_model")
+async def sync_model_route():
+    try:
+        from networksecurity.cloud.s3_syncer import S3Sync
+        from networksecurity.constant.training_pipeline import TRAINING_BUCKET_NAME
+        s3_sync = S3Sync()
+        success, message = s3_sync.get_latest_model_from_s3(TRAINING_BUCKET_NAME)
+        if success:
+            return Response(message)
+        else:
+            return Response(message, status_code=500)
+    except Exception as e:
+        raise NetworkSecurityException(e, sys)
+
 @app.post("/predict")
 async def predict_route(request: Request,file: UploadFile = File(...)):
     try:
